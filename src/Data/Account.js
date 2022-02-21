@@ -47,10 +47,11 @@ const CheckIfUserExits = (data) => {
             database: "deck_Builder"
         });
 
-    conn.connect((err) => {
-        if (err) throw err;
-        
-        var sql = `SELECT * FROM deck_builder.useraccount WHERE accountUsername = '${username}'`;
+        conn.connect((err) => {
+            if (err) throw err;
+            
+            var sql = `SELECT * FROM deck_builder.useraccount WHERE accountUsername = '${username}' OR email = '${email}'`;
+
             conn.query(sql, (err, result, fields) => {
                 if (err) throw err;
 
@@ -66,12 +67,7 @@ const CheckIfUserExits = (data) => {
         
             });
         });
-    });
-
-    
-
-    
-    
+    }); 
 }
 
 exports.CreateNewAccount = CreateNewAccount;
