@@ -1,12 +1,8 @@
 const express = require("express");
-
 const account = express.Router();
-
-const Suggestion = require("../models/movieSuggestions");
-
 const cors = require("cors");
 
-var whitelist = ['http://localhost:3000']
+const AccountData = require("../Data/Account");
 
 var corsOptions = {
   origin: 'http://localhost:3000'
@@ -20,18 +16,25 @@ var corsOptions = {
 };
 
 //create a new movie
-account.post("/createNewAccount", cors(corsOptions), (req, res) => {
-  console.log("hit");
-  console.log(req.body)
-  res.status(200).send({id: 12345});
+account.post("/createNewAccount", cors(corsOptions), async (req, res) => {
+  
 
-    // Suggestion.create(req.body, (error, createdMovieSuggestion) => {
-    //   if (error) {
-    //     res.status(400).json({ error: error.message });
-    //   }
-    //   res.status(200).send(createdMovieSuggestion);
-    //   console.log(createdMovieSuggestion);//  .json() will send proper headers in response so client knows it's json coming back
-    // });
+  const exists = await AccountData.CheckIfUserExits(req.body)
+
+  //new account will return exists = false
+  // if it exists, error will be thrown 
+  console.log(exists);
+
+    if (exists) {
+      console.log("Error");
+      const msg = {Msg: "Error: Duplicate Account"}
+      res.status(200).send(msg);
+    } else {
+      console.log("new account");
+      AccountData.CreateNewAccount(req.body);
+      const err = {Msg: "Success"}
+      res.status(200).send(err); 
+    }
 });
 
 //get all movies

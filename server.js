@@ -16,7 +16,7 @@ var corsOptions = {
 // const movieRoutes = require("./controllers/movieController");
 // const roomRoutes = require("./controllers/roomController");
 // const userRoutes = require("./controllers/userController");
-const accountRoutes = require("./controllers/AccountController")
+const accountRoutes = require("./src/controllers/AccountController")
 // const seedRoutes = require("./controllers/seedController")
 
 //mongo URI 
