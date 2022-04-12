@@ -27,16 +27,37 @@ account.post("/createNewAccount", cors(corsOptions), async (req, res) => {
 
     if (exists) {
       console.log("Error");
-      const msg = {Msg: "Error: Duplicate Account"}
+      let msg = {Msg: "Error: Duplicate Account"}
       res.status(200).send(msg);
     } else {
       console.log("new account");
       AccountData.CreateNewAccount(req.body);
-      const err = {Msg: "Success"}
-      res.status(200).send(err); 
+      let msg = {Msg: "Success"}
+      res.status(200).send(msg); 
     }
 });
 
+account.get("/authUser/:name/:password", cors(corsOptions), async (req, res) => {
+ 
+  const { name } = req.params;
+  const { password } = req.params;
+
+  console.log(name);
+  console.log(password);
+
+  const isAuthorized = await AccountData.AuthorizeUser(name, password);
+
+  console.log(isAuthorized);
+
+  if (isAuthorized) {
+    res.status(200).send({Msg: "Authorized"})
+  } else {
+    res.status(200).send({Msg: "Denied"})
+  }
+
+  
+
+})
 //get all movies
 
 // account.get("/findAll", cors(corsOptions), async (req, res) => {

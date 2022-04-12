@@ -70,5 +70,39 @@ const CheckIfUserExits = (data) => {
     }); 
 }
 
+const AuthorizeUser = (username, password) => {
+    return new Promise(resolve => {
+
+        var conn = mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            password: "N_Hock99!1",
+            database: "deck_Builder"
+        });
+
+        conn.connect((err) => {
+            if (err) throw err;
+            
+            var sql = `SELECT * FROM deck_builder.useraccount WHERE accountUsername = '${username}' AND accountPassword = '${password}'`;
+
+            conn.query(sql, (err, result, fields) => {
+                if (err) throw err;
+                console.log(result);
+
+                if (result === null || result === undefined || result === [] || result.length === 0) {
+                    console.log("denied")
+                    resolve(false);
+                } else {        
+                    console.log("authorized");      
+                    resolve(true);
+                }
+                
+        
+            });
+        });
+    }); 
+}
+
+exports.AuthorizeUser = AuthorizeUser;
 exports.CreateNewAccount = CreateNewAccount;
 exports.CheckIfUserExits = CheckIfUserExits;
